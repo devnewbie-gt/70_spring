@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- === 생성자를 이용한 의존성 주입(DI) === -->
+	<bean id="tv2Samsung" class="polymorphism02.SamsungTV">
+		<constructor-arg ref="sony"></constructor-arg>
+		<constructor-arg value="1000000"></constructor-arg> <!-- primitive data type의 경우, value 속성을 이용하여 값을 부여 -->
+	</bean>
+	
+	<bean id="sony" class="polymorphism02.SonySpeaker"/>
+	
+	<!-- 생성자에 전달되는 값 순서 : sony, 200, 100 -->
+	<bean id="tv2Samsung2" class="polymorphism02.SamsungTV">
+		<constructor-arg ref="sony"/>
+		<constructor-arg value="200"/>
+		<constructor-arg value="100"/>
+	</bean>
+	
+	<!-- 생성자에 전달되는 인수(파라미터) 순서를 index 속성으로 변경(0부터 시작) 
+		생성자에 전달되는 값 순서 : sony, 200, 100 순서로 전달 -->
+	<bean id="tv2Samsung3" class="polymorphism02.SamsungTV">
+		<constructor-arg index="0" ref="sony"/>
+		<constructor-arg index="2" value="100"/> <!-- index 속성 적용 -->
+		<constructor-arg index="1" value="200"/>
+	</bean>
+
+</beans>
