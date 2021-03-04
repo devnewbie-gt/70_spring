@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	
+	<!-- annotation 설정된 클래스의 객체 생성을 위한 설정
+		1. namespace 추가 : context(xmlns : context)
+		2. <context:component-scan> 태그 설정으로 탐색 위치 지정
+			- base-package 속성 : 컴포넌트 annotation을 탐색할 위치(작성된 패키지) 지정
+			  (설정된 패키지 포함 하위 패키지를 모두 검색)
+	-->
+	<context:component-scan base-package="com.spring.biz" />
+	
+	<!-- === AOP 설정(Xmlns:app 추가) === -->
+	<!-- Advice 동작 시점 before에 적용 할 Advice 객체를 생성 -->
+	<bean id="before" class="com.spring.biz.common.BeforeAdvice"/>
+	
+	<!-- 대상과 적용 시점 설정 -->
+	<aop:config>
+		<!-- 적용 대상 설정(pointcut) -->
+		<aop:pointcut id="allPointcut" 
+			expression="execution(* com.spring.biz..*Impl.*(..))" />
+			
+		<!-- 작업 설정(연결) -->
+		<aop:aspect ref="before"> <!-- Advice 객체 연결 -->
+			<aop:before pointcut-ref="allPointcut" method="beforeLog"/>
+		</aop:aspect>
+	</aop:config>
+	
+	
+</beans>
