@@ -4,10 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.spring.biz.board.BoardVO;
 import com.spring.biz.common.JDBCUtil;
 
+// @Repository : DB 연동 작업을 처리하는 클래스에 설정(xxxDAO, xxxDao)
+//		-@Component를 상속받아 기능이 확장된 어노테이션
+@Repository("boardDAO")
 public class BoardDAO {
 	// JDBC 관련 변수(필드)
 	private Connection conn;
@@ -89,6 +97,86 @@ public class BoardDAO {
 		}
 		
 		return board;
+	}
+	
+	// 글 수정
+	public void updateBoard(BoardVO vo) {
+		System.out.println("===> JDBC로 updateBoard() 실행");
+		
+		try {
+			conn = JDBCUtil.getConnection();
+			stmt = conn.prepareStatement(BOARD_UPDATE);
+			
+			stmt.setString(1, vo.getTitle());
+			stmt.setString(2, vo.getContent());
+			stmt.setInt(3, vo.getSeq());
+			
+			stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, stmt);
+		}
+		
+	}
+	
+	// 글 삭제
+	public void deleteBoard(BoardVO vo) {
+		System.out.println("===> JDBC로 deleteBoard() 실행");
+		
+		try {
+			conn = JDBCUtil.getConnection();
+			stmt = conn.prepareStatement(BOARD_DELETE);
+			
+			stmt.setInt(1, vo.getSeq());
+			
+			stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, stmt);
+		}
+		
+	}
+	
+	// 게시글 전체 조회
+	public List<BoardVO> getBoardList() {
+		System.out.println("===> JDBC로 getBoardList() 실행");
+		List<BoardVO> list = null;
+		
+		conn = JDBCUtil.getConnection();
+		if(conn == null) return null;
+		
+		try {
+			
+			stmt = conn.prepareStatement(BOARD_LIST);
+			rs = stmt.executeQuery();
+			
+			list = new ArrayList<BoardVO>();
+			
+			while (rs.next()) {
+				BoardVO board = new BoardVO();
+				board.setSeq(rs.getInt("seq"));
+				board.setTitle(rs.getString("title"));
+				board.setWriter(rs.getString("writer"));
+				board.setContent(rs.getString("content"));
+				board.setRegdate(rs.getDate("regdate"));
+				board.setCnt(rs.getInt("cnt"));
+				
+				list.add(board);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, stmt, rs);
+		}
+		
+		return list;
 	}
 	
 }
