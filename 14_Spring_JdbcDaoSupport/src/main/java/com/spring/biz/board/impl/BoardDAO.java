@@ -15,7 +15,7 @@ import com.spring.biz.common.JDBCUtil;
 
 // @Repository : DB 연동 작업을 처리하는 클래스에 설정(xxxDAO, xxxDao)
 //		-@Component를 상속받아 기능이 확장된 어노테이션
-@Repository("boardDAO")
+//@Repository("boardDAO")
 public class BoardDAO {
 	// JDBC 관련 변수(필드)
 	private Connection conn;

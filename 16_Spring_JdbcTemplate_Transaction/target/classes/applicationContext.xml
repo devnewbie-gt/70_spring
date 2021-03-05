@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- annotation 설정된 클래스의 객체 생성을 위한 설정
+		1. namespace 추가 : context(xmlns : context)
+		2. <context:component-scan> 태그 설정으로 탐색 위치 지정
+			- base-package 속성 : 컴포넌트 annotation을 탐색할 위치(작성된 패키지) 지정
+			  (설정된 패키지 포함 하위 패키지를 모두 검색)
+	-->
+	<context:component-scan base-package="com.spring.biz" />
+	
+	<!-- === Spring JDBC 관련 설정 === -->
+	<!-- DataSource 설정 -->
+	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" -->
+		<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"	
+			destroy-method="close">
+		<!-- 기존의 JDBC 설정과 유사 -->
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+		<property name="username" value="mystudy"/>
+		<property name="password" value="mystudypw"/>
+	</bean>
+	
+	<!-- 스프링 JDBC JdbcTemplate 객체(인스턴스) 생성 -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"></property>
+					<!-- name : 필드 이름, ref : 상위에 정의한 dataSource bean 객체를 참조 -->
+	</bean>
+	
+	<!-- ================================================================== -->
+	<!-- 트랜잭션 관련 설정 -->
+	<!-- 1. 스프링 제공 트랜잭션 객체(인스턴스) 생성 -->
+	<bean id="txManager" 
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- 2. 트랜잭션 어드바이스 설정(Xmls:tx, aop 추가) -->
+	<tx:advice id="txAdvice" transaction-manager="txManager"> <!-- 상단의 트랜잭션 객체 참조 -->
+		<tx:attributes>
+			<tx:method name="get*" read-only="true"/> <!-- 트랜잭션 적용 제외(select에는 트랜잭션의 필요성 x) -->
+			<tx:method name="*"/> <!-- 모든 메소드에 트랜잭션 적용 -->
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 3. AOP 설정을 통해 트랜잭션 적용(Advisor 사용) -->
+	<aop:config>
+		<aop:pointcut id="txPointcut" 
+			expression="execution(* com.spring.biz..*Impl.*(..))" />
+		<!-- Advisor는 적용할 Advice 메소드를 모르는 경우에 적용 -->
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+	</aop:config>
+	
+</beans>

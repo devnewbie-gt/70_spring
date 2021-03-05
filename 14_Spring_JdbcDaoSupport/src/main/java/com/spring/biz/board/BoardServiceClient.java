@@ -21,13 +21,15 @@ public class BoardServiceClient {
 		vo.setContent("테스트 중-spring");
 		boardService.insertBoard(vo);
 		
+		vo.setSeq(1);
+		System.out.println("getBoard : " + boardService.getBoard(vo));
 		// 전체 데이터 조회
 		List<BoardVO> list = boardService.getBoardList();
 		for (BoardVO board : list) {
 			System.out.println("board : " + board.toString());
 		}
-		
 		// 3. 스프링 컨테이너 종료
+		container.close();
 		
 	}
 }
