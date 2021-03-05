@@ -8,7 +8,7 @@ public class BoardServiceClient {
 	public static void main(String[] args) {
 		// 1. 스프링 컨테이너 구동
 		GenericXmlApplicationContext container 
-			= new GenericXmlApplicationContext("applicationContext_around.xml");
+			= new GenericXmlApplicationContext("applicationContext_after-throwing.xml");
 		
 		System.out.println("---- 컨테이너 구동 후 ----");
 		// 2. 스프링 컨테이너 사용

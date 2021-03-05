@@ -16,7 +16,7 @@
 	<context:component-scan base-package="com.spring.biz" />
 	
 	<!-- === AOP 설정(Xmlns:app 추가) === -->
-	<!-- after : Advice 동작 시점 before에 적용 할 Advice 객체를 생성 -->
+	<!-- after : Advice 동작 시점 after에 적용 할 Advice 객체를 생성 -->
 	<bean id="after" class="com.spring.biz.common.AfterAdvice"/>
 	
 	<!-- 대상과 적용 시점 설정 -->

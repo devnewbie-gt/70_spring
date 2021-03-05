@@ -28,7 +28,7 @@
 	</aop:config>
 	-->
 	
-	<!-- Log4jAdvicce 클래스를 사용하여 로그 남기기 -->
+	<!-- Log4jAdvice 클래스를 사용하여 로그 남기기 -->
 	<bean id="log4j" class="com.spring.biz.common.Log4jAdvice" />
 	<aop:config>
 		<!-- pointcut : 핵심 관심 중 AOP 적용 대상으로 선정할 메소드 지정 -->

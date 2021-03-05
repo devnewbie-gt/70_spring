@@ -23,9 +23,9 @@ public class BoardServiceImpl implements BoardService {
 	public void insertBoard(BoardVO vo) {
 		System.out.println(">> BoardServiceImpl.insertBoard() 시작~");
 		// 의도적으로 예외 발생시키기
-//		if(vo.getSeq() == 0) {
-//			throw new IllegalArgumentException("0번 글은 입력할 수 없습니다");
-//		}
+		if(vo.getSeq() == 0) {
+			throw new IllegalArgumentException("0번 글은 입력할 수 없습니다");
+		}
 		boardDAO.insertBoard(vo);
 	}
 

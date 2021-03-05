@@ -111,7 +111,7 @@ public class BoardDAO {
 			stmt.setString(2, vo.getContent());
 			stmt.setInt(3, vo.getSeq());
 			
-			int result = stmt.executeUpdate();
+			stmt.executeUpdate();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -132,7 +132,7 @@ public class BoardDAO {
 			
 			stmt.setInt(1, vo.getSeq());
 			
-			int result = stmt.executeUpdate();
+			stmt.executeUpdate();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
