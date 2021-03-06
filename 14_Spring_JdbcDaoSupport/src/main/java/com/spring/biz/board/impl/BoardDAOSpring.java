@@ -71,6 +71,7 @@ public class BoardDAOSpring extends JdbcDaoSupport {
 		Object args[] = {vo.getSeq()};
 										// .queryForObject : 단일 데이터 반환
 		return super.getJdbcTemplate().queryForObject(BOARD_GET, args, new BoardRowMapper());
+		// select 작업 시에 resultset 객체 대신 rowmapper 객체를 사용
 	}
 	
 	// 글 수정
