@@ -4,17 +4,7 @@
     pageEncoding="UTF-8"%>
 <%-- 전달받은 값(seq)을 사용하여 DB 데이터를 조회하고 화면에 표시 --%>
 <%
-	// 1. 전달받은 데이터 추출(확인)
-	String seq = request.getParameter("seq");
-	
-	// 2. DB 연동 처리(글 하나 조회)
-	BoardVO vo = new BoardVO();
-	vo.setSeq(Integer.parseInt(seq));
-	
-	BoardDAO boardDAO = new BoardDAO();
-	BoardVO board = new BoardVO();
-	
-	board = boardDAO.getBoard(vo);
+	BoardVO board = (BoardVO)session.getAttribute("board");
 	
 	// 3. 조회 데이터 화면 표시
 %>
@@ -51,10 +41,10 @@
 <div id="container">
 	
 	<h1>굴 상세</h1>
-	<p><a href="logout_proc.jsp">Log-out</a></p>
+	<p><a href="logout.jsp">Log-out</a></p>
 	<hr>
 	
-	<form action="updateBoard_proc.jsp" method="post">
+	<form action="updateBoard.jsp" method="post">
 		<input type="hidden" name="seq" value="<%=board.getSeq() %>">
 		<table>
 			<tr>
@@ -78,9 +68,9 @@
 	</form>
 	
 	<p>
-		<a href="insertBoard.jsp">글 등록</a>
-		<a href="deleteBoard_proc.jsp?seq=<%=board.getSeq()%>">글 삭제</a>
-		<a href="getBoardList.jsp">글 목록 가기</a>
+		<a href="insertBoard.do">글 등록</a>
+		<a href="deleteBoard.do?seq=<%=board.getSeq()%>">글 삭제</a>
+		<a href="getBoardList.do">글 목록 가기</a>
 	</p>
 	
 </div>
