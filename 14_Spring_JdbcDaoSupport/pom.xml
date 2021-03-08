@@ -23,6 +23,7 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 		
+		<!-- mvnrepository에서 가져옴 -->
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
