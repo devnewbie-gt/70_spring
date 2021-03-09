@@ -3,14 +3,17 @@ package com.spring.biz.view.user;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
 import com.spring.biz.user.UserVO;
 import com.spring.biz.user.impl.UserDAO;
-import com.spring.biz.view.controller.Controller;
 
+// Spring에서 제공하는 Controller를 상속
 public class LoginController implements Controller {
 
 	@Override
-	public String handleRequest(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) {
 		
 		// 1. 사용자 입력 데이터 확인(추출)
 		String id = request.getParameter("id");
@@ -27,24 +30,22 @@ public class LoginController implements Controller {
 		// 3. 화면 내비게이션(화면 이동)
 		// 로그인 성공 : 게시글 보여주기 - getBoardList.jsp
 		// 로그인 실패 : 로그인 화면으로 이동 - login.jsp
-		String returnStr = "";
+		ModelAndView mav = new ModelAndView();
 		if(user != null){ // 사용자 정보가 존재하는 경우
 			System.out.println("> 로그인 성공");
 			request.getSession().setAttribute("id", user.getId());
 			//response.sendRedirect("getBoardList.do");
 			
 			// ViewResolver를 이용하지 않는 경우에는 .do를 붙임
-			returnStr = "getBoardList.do";
+			mav.setViewName("getBoardList.do");	// forwarding 처리(default)
 		} else {
 			System.out.println("> 로그인 실패");
 			//response.sendRedirect("login.jsp");
 			
-			// ViewResolver를 이용하는 경우 .jsp를 붙이지 않음
-			// 경로 및 확장자는 ViewResolver를 통해 추가 구성
-			returnStr = "login";
+			mav.setViewName("login.jsp"); //ViewResolver를 사용하지 않는 경우
 		}
 		
-		return returnStr;
+		return mav;
 	}
 	
 }

@@ -3,14 +3,16 @@ package com.spring.biz.view.board;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
 import com.spring.biz.board.BoardVO;
 import com.spring.biz.board.impl.BoardDAO;
-import com.spring.biz.view.controller.Controller;
 
 public class UpdateBoardController implements Controller {
 
 	@Override
-	public String handleRequest(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) {
 		// 1. 전달받은 파라미터 값 추출(확인)
 		//request.setCharacterEncoding("UTF-8");
 		String seq = request.getParameter("seq");
@@ -29,9 +31,10 @@ public class UpdateBoardController implements Controller {
 		boardDAO.updateBoard(vo);
 		
 		// 3. 화면 내비게이션(목록 페이지로) 데이터 다시 읽어오기
-		//response.sendRedirect("getBoardList.do");
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("getBoardList.do");
 					
-		return "getBoardList.do";
+		return mav;
 	}
 	
 }
