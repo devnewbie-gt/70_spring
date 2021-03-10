@@ -27,6 +27,7 @@ public class BoardController {
 		Map<String, String> conditionMap = new HashMap<String, String>();
 		conditionMap.put("제목", "TITLE");
 		conditionMap.put("내용", "CONTENT");
+		// select 태그의 option을 추가하기 위한 Map 자료구조
 		
 		return conditionMap;
 	}
