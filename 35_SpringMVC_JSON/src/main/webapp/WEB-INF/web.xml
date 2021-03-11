@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         id="WebApp_ID" version="3.1">
+         <!-- web.xml 3.1 -->
+    
+    <!-- ContextLoaderListener가 찾는 설정 파일의 경로 선언 -->
+    <context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationContext.xml</param-value>
+	</context-param>
+    
+    <listener>
+    	<!-- ContextLoaderListener는 WAS에 프로그램 로딩 시
+    		스프링에서 사용할 설정 파일을 찾아서 처리.
+    		기본적으로 /WEB-INF/applicationContext.xml 파일을 찾음.
+    		context-param 태그를 사용하여 위치와 파일 명 변경 적용 가능 -->
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<!-- 필터 정의(encoding) : 모든 *.do 요청에 characterEncoding을 UTF-8 설정 -->
+	<filter>
+		<filter-name>characterEncoding</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>characterEncoding</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	
+	<!-- *.do 요청에 대하여 소프링 DispatcherServlet이 처리하도록 설정 
+		DispatcherServlet이 실행될 때 XmlWebApplicationContext 객체를 생성한 후
+		기본적으로 /WEB-INF/서블릿 명-servlet.xml 파일을 읽어서 처리
+		init-param 태그설정으로 설정 파일 위치와 파일 명 설정 사용
+	-->
+	
+	<!-- DispatcherServlet alias 및 servlet-context(presentation-layer.xml) 경로 설정 -->
+	<servlet>
+		<servlet-name>action</servlet-name>
+			<!-- spring에서 제공하는 DispatcherServlet -->
+			<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/presentation-layer.xml</param-value>
+		</init-param>
+	</servlet>
+	
+	<!-- 서블릿의 이름에 url 설정(action) -->
+	<servlet-mapping>
+		<!-- java의 DispatcherServlet과 통신을 위한 매핑 -->
+	<servlet-name>action</servlet-name>
+	   <url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+  
+</web-app>

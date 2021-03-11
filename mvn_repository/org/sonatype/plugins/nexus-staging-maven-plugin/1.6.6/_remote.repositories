@@ -1,0 +1,4 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Mar 11 09:49:06 KST 2021
+nexus-staging-maven-plugin-1.6.6.jar>central=
+nexus-staging-maven-plugin-1.6.6.pom>central=
